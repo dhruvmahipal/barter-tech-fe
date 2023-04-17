@@ -17,6 +17,9 @@ export class OrderfilledPage implements OnInit {
   finalPrice: any;
   userOrderDetails: any;
   additionalPrice: any;
+  userOrderSizeInfo: any;
+  flagSizeVisible: boolean = false;
+  couponAmount: number = 0;
   // menu: any[] = [
   //   {
   //     menuitem_name: 'Hara bhara Kabab(6 Pieces)',
@@ -77,6 +80,15 @@ export class OrderfilledPage implements OnInit {
       next: (data: any) => {
         if (data.status) {
           this.userOrderDetails = data.data.order_details;
+          this.couponAmount = this.userOrderDetails?.orders?.totalCouponAmt;
+          console.log(this.couponAmount);
+          this.userOrderDetails?.menu?.OrderData.map((x) => {
+            if (!!x.menuSizeInfo && Object.keys(x.menuSizeInfo).length > 0) {
+              x.flagSizeVisible = true;
+            } else {
+              x.flagSizeVisible = false;
+            }
+          });
           console.log(this.userOrderDetails);
           this.itemTotal(
             this.userOrderDetails.menu.OrderData,
@@ -106,14 +118,18 @@ export class OrderfilledPage implements OnInit {
       this.additionalPrice = 0;
       x.menuOptions.map((y) => {
         this.additionalPrice = this.additionalPrice + Number(y.AdditionalCost);
+        y.AdditionalCost = y.AdditionalCost * x.Quantity;
       });
+      this.additionalPrice = this.additionalPrice * x.Quantity;
       console.log(this.additionalPrice);
       this.finalPrice =
         this.finalPrice + calculatedPrice + this.additionalPrice;
     });
-    this.finalPrice = this.finalPrice + Number(taxAmount);
+
+    // this.finalPrice = this.finalPrice;
     console.log(this.finalPrice);
-    this.finalMoney = this.finalPrice + Number(delivery);
+    this.finalMoney =
+      this.finalPrice + Number(delivery) - Number(this.couponAmount);
     console.log(this.finalMoney);
   }
 

@@ -5,7 +5,7 @@
         <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title> APPLY VOUCHERS </ion-title>
+    <ion-title> APPLY VOUCHERS/POINTS </ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -48,7 +48,7 @@
         <ion-col size="8">
           <div id="mid_sec">
             <h4>{{data.couponCode}}: {{data.couponValue}}%</h4>
-            <p>{{data.couponDesc}}</p>
+            <p>{{data.couponTitle}}</p>
           </div>
         </ion-col>
         <ion-col size="3">
@@ -61,6 +61,53 @@
         </ion-col>
       </div>
     </ion-row>
+    <div
+      *ngIf="totalBalance>0"
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 10px;
+      "
+    >
+      <h4>AVAILABLE POINTS</h4>
+      <p style="margin: 16px 0px 10px 0px; font: size 20px; font-weight: 500">
+        {{totalBalance}}
+      </p>
+    </div>
+    <ion-row style="display: flex; align-items: center" *ngIf="totalBalance>0">
+      <ion-col size="1">
+        <ion-badge style="margin: 0" color="warning">%</ion-badge>
+      </ion-col>
+      <ion-col size="5">
+        <p style="margin: 0; font-size: 22px">Apply Points</p>
+        <br />
+      </ion-col>
+      <ion-col size="6">
+        <div class="upperbottom_design">
+          <ion-list lines="none">
+            <ion-item>
+              <ion-select
+                interface="popover"
+                [placeholder]="0"
+                (ionChange)="onApplyPointsChange($event)"
+                style="width: 100%; text-align: right"
+              >
+                <ion-select-option
+                  *ngFor="let data of pointTobeRedeemed;let i=index"
+                  [value]="data"
+                  >{{data}}<br />
+                  <!-- <p>
+                    {{data.addressLine1}} {{data.addressLine2}}
+                  </p> -->
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
+        </div>
+      </ion-col>
+    </ion-row>
+
     <hr />
   </ion-grid>
 </ion-content>

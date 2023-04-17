@@ -22,13 +22,16 @@ export class ContactusPage implements OnInit {
     private authService: AuthService,
     private router: Router,
     private toastService: ToastService,
-    private global: GlobalService,
+    private global: GlobalService
   ) {
     this.contactUsForm = this.fb.group({
       firstName: [null, [Validators.required]],
       lastName: [null],
       mobile: [null, [Validators.required]],
-      email: [null, [Validators.required, Validators.pattern(this.emailPattern)],],
+      email: [
+        null,
+        [Validators.required, Validators.pattern(this.emailPattern)],
+      ],
       note: [null, [Validators.required]],
     });
   }
@@ -47,7 +50,6 @@ export class ContactusPage implements OnInit {
     });
   }
   submitForm() {
-
     for (const i in this.contactUsForm.controls) {
       this.contactUsForm.controls[i].markAsDirty();
       this.contactUsForm.controls[i].updateValueAndValidity();
@@ -63,42 +65,38 @@ export class ContactusPage implements OnInit {
       this.mobile_FormControl.value.toString().length > 10
     ) {
       this.toastService.presentToast('Please enter a valid no');
+    } else {
+      let data = {
+        firstName: this.firstName_FormControl.value,
+        lastName: this.lastName_FormControl.value,
+        email: this.email_FormControl.value,
+        mobile: '+61' + this.mobile_FormControl.value,
+        note: this.note_FormControl.value,
+        merchant_id: 45,
+      };
+      console.log('-----------------data contact us-----------', data);
+      this.global.showLoader(' Sending Message');
+      this.authService.contactUs(data).subscribe({
+        next: (data) => {
+          // console.log(data);
+          if (data.status) {
+            this.global.hideLoader();
+            this.toastService.presentToast('Message sent successfully');
+            this.contactUsForm.reset();
+            this.router.navigate(['/account']);
+          } else {
+            this.global.hideLoader();
+            this.toastService.presentToast('Error in User Details');
+          }
+        },
+        error: (err) => {
+          this.global.hideLoader();
+          console.log(err);
+          const { firstName, email } = err.error;
+          this.toastService.presentToast(firstName || email);
+        },
+      });
     }
-    else{
-
-    
-    let data = {
-      firstName: this.firstName_FormControl.value,
-      lastName: this.lastName_FormControl.value,
-      email: this.email_FormControl.value,
-      mobile: '+61'+ this.mobile_FormControl.value,
-      note: this.note_FormControl.value,
-      merchant_id:68
-    };
-    console.log('-----------------data contact us-----------', data);
-    this.global.showLoader(' Sending Message');
-    this.authService.contactUs(data).subscribe({
-      next: (data) => {
-        
-        // console.log(data);
-        if (data.status) {
-          this.global.hideLoader();
-          this.toastService.presentToast('Message sent successfully');
-          this.contactUsForm.reset();
-          this.router.navigate(['/account']);
-        } else {
-          this.global.hideLoader();
-          this.toastService.presentToast('Error in User Details');
-        }
-      },
-      error: (err) => {
-        this.global.hideLoader();
-        console.log(err);
-        const {firstName,email  } = err.error
-        this.toastService.presentToast(firstName || email);
-      },
-    });
-  }
   }
   get officialEmail() {
     return this.contactUsForm.get('email');

@@ -98,6 +98,18 @@ export class AccountPage implements OnInit {
       // console.log(this.router.url);
       this.getData();
       this.getAddress();
+      this.authService.badgeDataSubject.subscribe((res) => {
+        console.log(res, 'heelo');
+        console.log(Object.keys(res), 'byee');
+        if (res == 0) {
+          let data = JSON.parse(localStorage.getItem('cartItems'));
+          this.cartItemsLength = data ? data.length : 0;
+          console.log(this.cartItemsLength);
+        } else {
+          this.cartItemsLength = res;
+          console.log(this.cartItemsLength);
+        }
+      });
     });
   }
 
@@ -154,19 +166,9 @@ export class AccountPage implements OnInit {
 
   ngOnInit(): void {
     // this.getData();
-    this.getAddress();
+    // this.getAddress();
     this.loadFiles();
     this.getURL();
-    this.authService.badgeDataSubject.subscribe((res) => {
-      console.log(res, 'heelo');
-      console.log(Object.keys(res), 'byee');
-      if (res == 0) {
-        let data = JSON.parse(localStorage.getItem('cartItems'));
-        this.cartItemsLength = data ? data.length : 0;
-      } else {
-        this.cartItemsLength = res;
-      }
-    });
   }
   qrbtn() {
     this.zipped = !this.zipped;
@@ -209,6 +211,7 @@ export class AccountPage implements OnInit {
           this.router.navigate(['/login']);
           this.global.hideLoader();
           this.authService.couponSubject.next({});
+          localStorage.clear();
         })
         .catch((e) => {
           this.global.hideLoader();
@@ -444,7 +447,9 @@ export class AccountPage implements OnInit {
     });
     console.log(this.images);
     this.photoVariable = this.images[this.images.length - 1].data;
-    this.userData.percentage = this.userData.percentage + 10;
+    if (this.userData?.percentage) {
+      this.userData.percentage = this.userData?.percentage + 10;
+    }
     if (this.percentage !== 100) {
       this.percentage = this.percentage + 10;
     }
@@ -509,9 +514,9 @@ export class AccountPage implements OnInit {
         console.log(data);
         this.userAddress = data.status;
         if (data.status == false) {
-          setTimeout(() => {
-            this.presentAlert();
-          }, 2000);
+          this.cartItemsLength = 0;
+
+          this.presentAlert();
         }
         this.global.hideLoader();
       },

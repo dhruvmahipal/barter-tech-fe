@@ -193,7 +193,7 @@
 
           <div
             *ngIf="GetFilename(item.menuItemimageUrl)!='noitemimage'"
-            (click)="setOpen(true)"
+            (click)="setOpen(true,item.menuItemimageUrl)"
           >
             <img
               src="{{item.menuItemimageUrl}}"
@@ -217,7 +217,7 @@
               </ion-header>
               <ion-content class="ion-padding">
                 <ion-item class="image_section">
-                  <img src="{{item.menuItemimageUrl}}" alt="" />
+                  <img src="{{imageUrl}}" alt="" />
                 </ion-item>
               </ion-content>
             </ng-template>
@@ -315,7 +315,7 @@
               type="checkbox"
               value="{{ls.optionitemname}}"
               [(ngModel)]="ls.selected"
-              (change)="onItemSelect(ls)"
+              (change)="onItemSelect(ls,'first',$event)"
               id="flexCheckDefault{{index}}"
             />
             <label class="form-check-label" for="flexCheckDefault{{index}}"
@@ -337,13 +337,38 @@
             <input
               class="form-check-input"
               type="checkbox"
-              name="checkbox{{index}}"
+              name="checkboxx{{index}}"
               value="{{ls.optionitemname}}"
               [(ngModel)]="ls.selected"
-              (change)="onItemSelect(ls)"
+              (change)="onItemSelect(ls,'second',$event)"
               id="flexCheckDefaultt{{index}}"
             />
             <label class="form-check-label" for="flexCheckDefaultt{{index}}"
+              >{{ls.optionitemname}} &nbsp;-&nbsp;
+              <span>${{ls.displayOptionValue}}</span></label
+            >
+          </div>
+        </ng-container>
+        <ng-container *ngIf="newValue2?.length>0">
+          <label
+            class="main"
+            [ngClass]="{'required':this.tempItem.isOptionMandatory =='1'}"
+            >{{groupName2}}</label
+          >
+          <div
+            class="form-check"
+            *ngFor="let ls of newValue2 let index = index"
+          >
+            <input
+              class="form-check-input"
+              type="checkbox"
+              name="checkboxxx{{index}}"
+              value="{{ls.optionitemname}}"
+              [(ngModel)]="ls.selected"
+              (change)="onItemSelect(ls,'third',$event)"
+              id="flexCheckDefaulttt{{index}}"
+            />
+            <label class="form-check-label" for="flexCheckDefaulttt{{index}}"
               >{{ls.optionitemname}} &nbsp;-&nbsp;
               <span>${{ls.displayOptionValue}}</span></label
             >

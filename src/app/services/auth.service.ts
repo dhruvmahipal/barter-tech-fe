@@ -25,6 +25,7 @@ export class AuthService {
   addressSubject = new BehaviorSubject({});
   accountSubject = new BehaviorSubject({});
   couponSubject = new BehaviorSubject({});
+  pointSubject = new BehaviorSubject({});
   mobileNumberSubject = new BehaviorSubject({});
   totalDataSubject = new BehaviorSubject({});
   badgeDataSubject = new BehaviorSubject(0);
@@ -83,7 +84,7 @@ export class AuthService {
     return this.http.post<any>(this.url2 + '/requestOtp', data);
   }
   getBalance() {
-    let params = new HttpParams().append('merchant_id', '68');
+    let params = new HttpParams().append('merchant_id', '45');
     return this.http.get(this.url2 + '/balance-details', { params });
   }
   async logout() {
@@ -99,7 +100,7 @@ export class AuthService {
     return this.http.get(this.url2 + '/profile');
   }
   getVouchers() {
-    const params = new HttpParams().append('merchant_id', '68');
+    const params = new HttpParams().append('merchant_id', '45');
     return this.http.get(this.url2 + '/getvouchers', { params });
   }
   getMyOrders() {
@@ -116,7 +117,7 @@ export class AuthService {
   //   return this.http.get(this.url3);
   // }
   searchData(keyword) {
-    let params = new HttpParams().append('merchant_id', '68');
+    let params = new HttpParams().append('merchant_id', '45');
     params = params.append('keyword', keyword);
     return this.http.get(this.url2 + '/searchItems', { params });
   }
@@ -127,17 +128,17 @@ export class AuthService {
     return this.http.post(this.url2 + '/Deleteaddress', data);
   }
   getZipCode() {
-    let params = new HttpParams().append('merchant_id', '68');
+    let params = new HttpParams().append('merchant_id', '45');
     params = params.append('country_id', '1');
     return this.http.get(this.url2 + '/zipCode', { params });
   }
   getworkingHours() {
-    const params = new HttpParams().append('merchant_id', '68');
+    const params = new HttpParams().append('merchant_id', '45');
     return this.http.get(this.url2 + '/workingHours', { params });
   }
   getDeliveryCharges(data) {
     let params = new HttpParams().append('suburb_name', data.suburb_name);
-    params = params.append('merchant_id', '68');
+    params = params.append('merchant_id', '45');
     return this.http.get(this.url2 + '/DeliveryCharges', { params });
   }
   getCodUpdate(data) {
@@ -156,14 +157,15 @@ export class AuthService {
     return this.http.post(this.url2 + '/profilePic', data);
   }
   searchSuburb(data) {
-    return this.http.get(this.url2 + '/search_suburb', data);
+    let params = new HttpParams().append('keyword', data.keyword);
+    return this.http.get(this.url2 + '/search_suburb', { params });
   }
   getUrl() {
-    const params = new HttpParams().append('Merchant_Id', '68');
+    const params = new HttpParams().append('Merchant_Id', '45');
     return this.http.get(this.url2 + '/URLS', { params });
   }
   getCarouselImages(data) {
-    let params = new HttpParams().append('merchant_id', '68');
+    let params = new HttpParams().append('merchant_id', '45');
     params = params.append('order_type', data.order_type);
     return this.http.get(this.url2 + '/CarouselImages', { params });
   }

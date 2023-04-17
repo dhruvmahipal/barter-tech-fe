@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
@@ -16,9 +16,12 @@ import { GlobalService } from 'src/app/services/global.service';
   styleUrls: ['./addaddress.page.scss'],
 })
 export class AddaddressPage implements OnInit {
+  @ViewChild('searchInput') sInput;
   addAddressForm: FormGroup;
   userAddress: any;
   mobileNo: any;
+  searchItems: any = [];
+  query: any;
   constructor(
     private authService: AuthService,
     private fb: FormBuilder,
@@ -47,6 +50,9 @@ export class AddaddressPage implements OnInit {
   }
 
   ngOnInit() {
+    // setTimeout(() => {
+    //   this.sInput.setFocus();
+    // }, 500);
     this.getzipCode();
   }
   getzipCode() {
@@ -68,6 +74,34 @@ export class AddaddressPage implements OnInit {
       },
     });
   }
+  // async onSearchChange(event) {
+  //   console.log(event.target.value);
+  //   this.query = event.target.value;
+  //   console.log(this.query);
+  //   if (this.query.length >= 3) {
+  //     this.global.showLoader('Loading Data');
+  //     let data = {
+  //       keyword: this.query,
+  //     };
+  //     this.authService.searchSuburb(data).subscribe({
+  //       next: (data: any) => {
+  //         console.log(data);
+  //         if (data.data == '') {
+  //           this.searchItems = [];
+  //         } else {
+  //           this.searchItems = data.data;
+  //         }
+  //         this.global.hideLoader();
+  //       },
+  //       error: (err) => {
+  //         this.global.hideLoader();
+  //         console.log(err);
+  //       },
+  //     });
+  //   } else {
+  //     this.searchItems = [];
+  //   }
+  // }
 
   addAddress() {
     if (

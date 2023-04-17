@@ -50,9 +50,36 @@
           [items]="userAddress"
           [canSearch]="true"
           (onChange)="portChange($event)"
+          [hasVirtualScroll]="true"
         >
         </ionic-selectable>
       </ion-item>
+
+      <!-- <ion-searchbar
+        animated="true"
+        debounce="800"
+        #searchInput
+        (ionChange)="onSearchChange($event)"
+        formControlName="pincode"
+      ></ion-searchbar> -->
+
+      <!-- <input
+        list="browsers"
+        name="browser"
+        class="inputo1"
+        placeholder="Choose Suburb"
+        formControlName="pincode"
+        (keypress)="onSearchChange($event)"
+      /> -->
+      <!-- <div id="data_list"> -->
+      <!-- <datalist id="browsers" *ngIf="searchItems?.length>0">
+        <option
+          *ngFor="let data of searchItems"
+          [value]="data?.postal_code?.postal_code + '-' + data?.suburb_name"
+        ></option>
+      </datalist> -->
+      <!-- </div> -->
+
       <!-- <ion-list class="tag" lines="none">
         <ion-item>
           <ion-select

@@ -49,10 +49,18 @@
               <span>${{subItem.displayOptionValue}}</span>
             </p>
           </ng-container>
+          <ng-container
+            *ngFor="let subItem1 of item?.options?.optionGroups[2]?.optionItems"
+          >
+            <p *ngIf="subItem1.selected">
+              {{subItem1?.optionitemname}}&nbsp;-&nbsp;
+              <span>${{subItem1.displayOptionValue}}</span>
+            </p>
+          </ng-container>
           <ng-container *ngFor="let sz of item?.options.size">
             <p *ngIf="sz?.size_name">
               <span>{{sz?.size_name}}</span>
-              <small> &nbsp; ${{sz?.displaySizeValue}}</small>
+              <!-- <small> &nbsp; ${{sz?.displaySizeValue}}</small> -->
             </p>
           </ng-container>
           <ng-container>
@@ -76,8 +84,9 @@
             </ion-button>
           </div>
           <p>
-            ${{item.displaySizeValue*item.product_quantity | number : '1.2-2'}}
-            <br /><span *ngIf="item.IsPriceTaxInclusive==1"
+            ${{item.perItemTotalPrice | number : '1.2-2'}}
+            <br /><span
+              *ngIf="item.IsPriceTaxInclusive==1 && item.taxvalue_type === 'P'"
               >(Gst Inclusive)</span
             >
           </p>
@@ -173,16 +182,16 @@
           <p>(GST Inclusive)</p>
         </ion-col>
         <ion-col>
-          <p>$({{gst | number : '1.2-2'}})</p>
+          <p>(${{gst | number : '1.2-2'}})</p>
         </ion-col>
       </ion-row>
 
       <ion-row *ngIf="isCouponApplied && isCouponUsed">
-        <ion-col size="10">
-          <p>Coupon -({{appliedCoupon.couponCode}})</p>
+        <ion-col size="9.5">
+          <p>Coupon -({{appliedCoupon?.couponCode}})</p>
         </ion-col>
         <ion-col>
-          <p>${{appliedCoupon.couponValue}}</p>
+          <p>${{couponAmount}}</p>
         </ion-col>
       </ion-row>
 
@@ -235,7 +244,7 @@
           </p>
           <br />
           <p style="color: red" *ngIf="showWarning">
-            We are not yet delivering to this selected address
+            Please Select Delivery Address.
           </p>
         </ion-col>
         <ion-col size="6">

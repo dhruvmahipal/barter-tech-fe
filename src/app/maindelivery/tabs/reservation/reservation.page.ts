@@ -16,7 +16,7 @@ import { GlobalService } from 'src/app/services/global.service';
 })
 export class ReservationPage implements OnInit {
   reservationForm: FormGroup;
-  zipped: boolean = true; 
+  zipped: boolean = true;
   dining_event_date = 'DINING DATE';
   dining_event_time = 'DINING TIME';
   emailPattern = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-z]{2,4}$';
@@ -25,13 +25,16 @@ export class ReservationPage implements OnInit {
     private fb: FormBuilder,
     private toastService: ToastService,
     private router: Router,
-    private global: GlobalService,
+    private global: GlobalService
   ) {
     this.reservationForm = this.fb.group({
       firstName: [null, [Validators.required]],
       lastName: [null],
-      mobile: [null, [Validators.required,Validators.maxLength(10)]],
-      email: [null, [Validators.required,Validators.pattern(this.emailPattern)]],
+      mobile: [null, [Validators.required, Validators.maxLength(10)]],
+      email: [
+        null,
+        [Validators.required, Validators.pattern(this.emailPattern)],
+      ],
       date: [null, [Validators.required]],
       time: [null, [Validators.required]],
       guests: [null, [Validators.required]],
@@ -47,43 +50,42 @@ export class ReservationPage implements OnInit {
       this.mobile_FormControl.value.toString().length > 10
     ) {
       this.toastService.presentToast('Please enter a valid no');
-    }
-    else{
-    let data = {
-      firstname: this.firstName_FormControl.value,
-      last_name: this.lastName_FormControl.value,
-      email: this.email_FormControl.value,
-      mobile: '+61' +this.mobile_FormControl.value,
-      guest: this.guests_FormControl.value,
-      occasion: this.occasion_FormControl.value,
-      note: this.notes_FormControl.value,
-      merchant_id: 68,
-      reservation_type:
-        this.dining_event_date === 'DINING DATE' ? 'dining' : 'event',
-    };
-    if (this.dining_event_date === 'DINING DATE') {
-      (data['diningDate'] = this.date_FormControl.value),
-        (data['diningTime'] = this.time_FormControl.value);
     } else {
-      data['eventDate'] = this.date_FormControl.value;
-      data['eventTime'] = this.time_FormControl.value;
+      let data = {
+        firstname: this.firstName_FormControl.value,
+        last_name: this.lastName_FormControl.value,
+        email: this.email_FormControl.value,
+        mobile: '+61' + this.mobile_FormControl.value,
+        guest: this.guests_FormControl.value,
+        occasion: this.occasion_FormControl.value,
+        note: this.notes_FormControl.value,
+        merchant_id: 45,
+        reservation_type:
+          this.dining_event_date === 'DINING DATE' ? 'dining' : 'event',
+      };
+      if (this.dining_event_date === 'DINING DATE') {
+        (data['diningDate'] = this.date_FormControl.value),
+          (data['diningTime'] = this.time_FormControl.value);
+      } else {
+        data['eventDate'] = this.date_FormControl.value;
+        data['eventTime'] = this.time_FormControl.value;
+      }
+      console.log(data);
+      this.authService.reservation(data).subscribe({
+        next: (data) => {
+          console.log(data);
+          if (data.status) {
+            this.toastService.presentToast(data.message);
+            this.reservationForm.reset();
+          } else {
+            this.toastService.presentToast(data.message);
+          }
+        },
+        error: (err) => {
+          this.toastService.presentToast(err);
+        },
+      });
     }
-    console.log(data);
-    this.authService.reservation(data).subscribe({
-      next: (data) => {
-        console.log(data);
-        if (data.status) {
-          this.toastService.presentToast(data.message);
-          this.reservationForm.reset();
-        } else {
-          this.toastService.presentToast(data.message);
-        }
-      },
-      error: (err) => {
-        this.toastService.presentToast(err);
-      },
-    });
-  }
   }
 
   tableReservation() {

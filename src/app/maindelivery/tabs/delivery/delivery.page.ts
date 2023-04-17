@@ -18,12 +18,13 @@ import { IonicSlides, IonSlides } from '@ionic/angular';
 import { ProductCategory } from 'src/app/common/product-category';
 import { ProductService } from 'src/app/services/product.service';
 import { Product } from 'src/app/common/product';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalService } from 'src/app/services/global.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { AlertController } from '@ionic/angular';
 import { element } from 'protractor';
 import { IonModal } from '@ionic/angular';
+import { ToastService } from 'src/app/services/toast.service';
 
 // install Swiper modules
 SwiperCore.use([
@@ -50,6 +51,7 @@ export class DeliveryPage implements OnInit, OnDestroy {
   currentItem: any;
   selected: any;
   isModalOpen: boolean = false;
+  imageUrl: any;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   product_quantity = 0;
   selectedProducts: any = [];
@@ -61,10 +63,15 @@ export class DeliveryPage implements OnInit, OnDestroy {
   newSize: any;
   groupName: any;
   groupName1: any;
+  groupName2: any;
   category: any;
   item: [];
   newValue: any;
   newValue1: any;
+  newValue2: any;
+  maxselect: any;
+  maxselect1: any;
+  maxselect2: any;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   tempItem: any = {
     selectedItems: [],
@@ -124,11 +131,13 @@ export class DeliveryPage implements OnInit, OnDestroy {
   singleProduct: any;
 
   constructor(
+    public router: Router,
     private productService: ProductService,
     private route: ActivatedRoute,
     private global: GlobalService,
     private authService: AuthService,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private toastService: ToastService
   ) {
     this.currentRoute = this.route.snapshot['_routerState'].url.split('/')[2];
     this.route.params.subscribe((res) => {
@@ -158,6 +167,7 @@ export class DeliveryPage implements OnInit, OnDestroy {
         this.authService.badgeDataSubject.next(0);
         localStorage.setItem('currentRoute', this.currentRoute);
       }
+      this.global.showLoader('Loading Data');
       this.listProductCategories();
       if (JSON.parse(localStorage.getItem('cartItems'))) {
         this.selectedProducts = JSON.parse(localStorage.getItem('cartItems'));
@@ -188,7 +198,6 @@ export class DeliveryPage implements OnInit, OnDestroy {
   }
 
   listProductCategories() {
-    this.global.showLoader('Loading Data');
     this.getBannerImages();
     this.productService.getProductCategories().subscribe(
       (data) => {
@@ -196,8 +205,8 @@ export class DeliveryPage implements OnInit, OnDestroy {
         this.productCategories = data?.data[0]?.menueGroup;
         this.currentCategoryId = data?.data[0]?.menueGroup[0]?.menuGroupId;
         this.selected = data?.data[0]?.menueGroup[0]?.groupName;
-        this.global.hideLoader();
         this.getDataBymenuGroupId(this.currentCategoryId, this.selected);
+        this.global.hideLoader();
         // console.log(this.productCategories,"API DATA");
       },
       (err) => {
@@ -274,6 +283,9 @@ export class DeliveryPage implements OnInit, OnDestroy {
     product.optionGroups[1]?.optionItems.map((y) => {
       y.selected = false;
     });
+    product.optionGroups[2]?.optionItems.map((z) => {
+      z.selected = false;
+    });
     // document.getElementById("newpop").onreset();
     console.log(
       'this.menuItems',
@@ -290,8 +302,13 @@ export class DeliveryPage implements OnInit, OnDestroy {
       this.groupName = product.optionGroups[0]?.optionGroupName;
       this.newSize = product.size[0]?.size_deliveryPrice;
       this.groupName1 = product.optionGroups[1]?.optionGroupName;
+      this.groupName2 = product.optionGroups[2]?.optionGroupName;
+      this.maxselect = product.optionGroups[0]?.max_item_selection_allow;
+      this.maxselect1 = product.optionGroups[1]?.max_item_selection_allow;
+      this.maxselect2 = product.optionGroups[2]?.max_item_selection_allow;
       console.log(this.groupName1);
       this.newValue1 = product.optionGroups[1]?.optionItems;
+      this.newValue2 = product.optionGroups[2]?.optionItems;
       if (this.newValue) {
         this.newValue.map((x) => {
           if (this.currentRoute == 'delivery') {
@@ -314,20 +331,33 @@ export class DeliveryPage implements OnInit, OnDestroy {
           }
         });
       }
-      if (product.size.length > 1) {
-        product.size.map((x) => {
+      if (this.newValue2) {
+        this.newValue2.map((x) => {
           if (this.currentRoute == 'delivery') {
-            x.displaySizeValue = x.size_deliveryPrice;
+            x.displayOptionValue = x.deliveryPrice;
           } else if (this.currentRoute == 'takeaway') {
-            x.displaySizeValue = x.size_takeawayPrice;
+            x.displayOptionValue = x.takeawayPrice;
           } else if (this.currentRoute == 'dinein') {
-            x.displaySizeValue = x.size_dineInPrice;
+            x.displayOptionValue = x.dineinPrice;
+          }
+        });
+      }
+      if (product.size.length >= 1) {
+        console.log(product);
+        product.size.map((x: any) => {
+          if (this.currentRoute == 'delivery') {
+            x.displaySizeValue = x?.size_deliveryPrice;
+          } else if (this.currentRoute == 'takeaway') {
+            x.displaySizeValue = x?.size_takeawayPrice;
+          } else if (this.currentRoute == 'dinein') {
+            x.displaySizeValue = x?.size_dineInPrice;
           }
         });
       }
 
       console.log(this.newValue, 'lol');
       console.log(this.newValue1, 'hibro');
+      console.log(this.newValue2, '--dhruv');
       this.tempItem = item;
       this.tempArray = JSON.parse(localStorage.getItem('cartItems'))
         ? JSON.parse(localStorage.getItem('cartItems'))
@@ -376,7 +406,64 @@ export class DeliveryPage implements OnInit, OnDestroy {
     }
   }
 
-  onItemSelect(event) {
+  onItemSelect(event, name, target) {
+    console.log({
+      event,
+    });
+
+    // console.log(name, {
+    //   one: this.maxselect,
+    //   two: this.maxselect1,
+    //   three: this.maxselect2,
+    // });
+    if (name == 'first' && typeof this.maxselect == 'number') {
+      if (!target.srcElement.checked) {
+        this.maxselect++;
+        console.log({ name, one: this.maxselect });
+      } else if (this.maxselect == 0) {
+        this.toastService.presentToast('You cant select more items');
+
+        target.srcElement.checked = false;
+        event.selected = false;
+      }
+    } else if (name == 'second' && typeof this.maxselect1 == 'number') {
+      if (!target.srcElement.checked) {
+        this.maxselect1++;
+      } else if (this.maxselect1 == 0) {
+        this.toastService.presentToast('You cant select more items');
+        target.srcElement.checked = false;
+        event.selected = false;
+      }
+    } else if (name == 'third' && typeof this.maxselect2 == 'number') {
+      if (!target.srcElement.checked) {
+        console.log('inc ');
+        this.maxselect2++;
+
+        console.log(this.maxselect2);
+      } else if (this.maxselect2 == 0) {
+        this.toastService.presentToast('You cant select more items');
+        target.srcElement.checked = false;
+        event.selected = false;
+      }
+    }
+    console.log(this.tempItem.IsSizeApplicable, '------------');
+
+    if (name == 'first' && this.maxselect > 0 && target.srcElement.checked) {
+      this.maxselect--;
+      console.log({ name, one: this.maxselect });
+    } else if (
+      name == 'second' &&
+      this.maxselect1 > 0 &&
+      target.srcElement.checked
+    ) {
+      this.maxselect1--;
+    } else if (
+      name == 'third' &&
+      this.maxselect2 > 0 &&
+      target.srcElement.checked
+    ) {
+      this.maxselect2--;
+    }
     if (event?.selected === true) {
       this.selectedProducts.push(event);
     } else {
@@ -385,6 +472,7 @@ export class DeliveryPage implements OnInit, OnDestroy {
       );
       this.selectedProducts = newArray;
     }
+    console.log(this.selectedProducts);
     console.log(this.tempItem.isOptionMandatory, '-----man');
 
     if (
@@ -394,8 +482,17 @@ export class DeliveryPage implements OnInit, OnDestroy {
     ) {
       let a = this.newValue?.find((el) => el.selected === true);
       let b = this.newValue1?.find((el) => el.selected === true);
-      if (a && b && this.selectedSize) {
+      let c = this.newValue2?.find((el) => el.selected == true);
+      console.log({ a, b, c }, '----');
+      if (a && b && c && this.selectedSize) {
+        console.log('going');
         this.isCartValid = false;
+      } else if (a && b && this.selectedSize) {
+        if (!!this.newValue2?.length) {
+          this.isCartValid = true;
+        } else {
+          this.isCartValid = false;
+        }
       } else if (
         a &&
         this.selectedSize &&
@@ -408,17 +505,64 @@ export class DeliveryPage implements OnInit, OnDestroy {
         this.newValue?.length === undefined
       ) {
         this.isCartValid = false;
+      } else if (
+        a &&
+        this.selectedSize &&
+        this.newValue1?.length === undefined &&
+        this.newValue2?.length === undefined
+      ) {
+        this.isCartValid = false;
+      } else if (
+        b &&
+        this.selectedSize &&
+        this.newValue?.length === undefined &&
+        this.newValue2?.length === undefined
+      ) {
+        this.isCartValid = false;
+      } else if (
+        c &&
+        this.selectedSize &&
+        this.newValue?.length === undefined &&
+        this.newValue1?.length === undefined
+      ) {
+        this.isCartValid = false;
       } else {
         this.isCartValid = true;
       }
     } else if (this.tempItem.IsSizeApplicable === '0') {
+      console.log(this.tempItem.IsSizeApplicable, '------------');
       let a = this.newValue?.find((el) => el.selected === true);
+      console.log({ a });
       let b = this.newValue1?.find((el) => el.selected === true);
-      if (a && b && this.newValue && this.newValue1) {
+      let c = this.newValue2?.find((el) => el.selected === true);
+      if (a && b && c && this.newValue && this.newValue1 && this.newValue2) {
         this.isCartValid = false;
-      } else if (this.newValue && a && this.newValue1?.length === undefined) {
+      } else if (
+        this.newValue &&
+        a &&
+        this.newValue1?.length === undefined &&
+        this.newValue2?.length == undefined
+      ) {
         this.isCartValid = false;
-      } else if (this.newValue1 && b && this.newValue?.length === undefined) {
+      } else if (
+        this.newValue1 &&
+        b &&
+        this.newValue?.length === undefined &&
+        this.newValue2?.length === undefined
+      ) {
+        this.isCartValid = false;
+      } else if (
+        this.newValue2 &&
+        c &&
+        this.newValue?.length === undefined &&
+        this.newValue1?.length === undefined
+      ) {
+        this.isCartValid = false;
+      } else if (a && b && this.newValue && this.newValue1 && !this.newValue2) {
+        this.isCartValid = false;
+      } else if (b && c && this.newValue1 && this.newValue2 && !this.newValue) {
+        this.isCartValid = false;
+      } else if (c && a && this.newValue && this.newValue2 && !this.newValue1) {
         this.isCartValid = false;
       } else {
         this.isCartValid = true;
@@ -442,10 +586,14 @@ export class DeliveryPage implements OnInit, OnDestroy {
     this.category = this.singleProduct.product;
     this.authService.badgeDataSubject.next(this.menuItems.length);
     // this.tempItem.selectedItems = this.selectedProducts;
-
-    this.tempItem.options.size = [];
-    this.tempItem.options.size.push(this.selectedSize);
-    this.tempArray.push(this.tempItem);
+    console.log({ addToCartBefore: this.tempItem?.options?.size });
+    let oldTempItem = JSON.parse(JSON.stringify(this.tempItem));
+    // this.tempItem.options.size = [];
+    // this.tempItem.options.size.push(this.selectedSize);
+    oldTempItem.options.size = [];
+    oldTempItem.options.size.push(this.selectedSize);
+    console.log({ addToCartAfter: this.tempItem?.options?.size });
+    this.tempArray.push(oldTempItem);
 
     localStorage.setItem('cartItems', JSON.stringify(this.tempArray));
     const notShow = document.getElementById('popup');
@@ -490,7 +638,13 @@ export class DeliveryPage implements OnInit, OnDestroy {
         x.selected = false;
       });
     }
+    if (this.newValue2 && this.newValue2.length > 0) {
+      this.newValue2.map((x) => {
+        x.selected = false;
+      });
+    }
     this.selectedSize = null;
+    this.selectedProducts = [];
   }
 
   getDataBymenuGroupId(id: any, name: any) {
@@ -555,7 +709,7 @@ export class DeliveryPage implements OnInit, OnDestroy {
       const s = e.target.getBoundingClientRect();
       const sw = s.right - s.left;
       for (const button of e.target.childNodes) {
-        if (button.className.indexOf('segment-button-checked') > -1) {
+        if (button?.className?.indexOf('segment-button-checked') > -1) {
           const bc = button.offsetLeft + button.offsetWidth / 2;
           const diff = bc - sw / 2;
           e.target.scrollTo({
@@ -595,11 +749,13 @@ export class DeliveryPage implements OnInit, OnDestroy {
       },
     });
   }
-  setOpen(value: any) {
+  setOpen(value: any, imageUrl: any) {
     this.isModalOpen = value;
+    this.imageUrl = imageUrl;
   }
   cancel() {
     this.modal.dismiss(null, 'cancel');
     this.isModalOpen = false;
+    this.router.navigate(['/maindelivery/' + this.currentRoute]);
   }
 }

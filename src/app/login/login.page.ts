@@ -43,7 +43,7 @@ export class LoginPage implements OnInit {
   device_serial: any;
   registration_id: any;
   validateForm: FormGroup;
-  emailPattern = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-z]{2,4}$';
+  emailPattern = '^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$';
   showAppleSignIn: any;
 
   constructor(
@@ -112,7 +112,9 @@ export class LoginPage implements OnInit {
           this.toastService.presentToast(data.message);
           this.router.navigate(['/account']);
         } else {
-          this.toastService.presentToast('Email Already Exists');
+          this.toastService.presentToast(
+            'Email is already registered, Please login '
+          );
         }
       },
       error: (err) => {
@@ -318,8 +320,9 @@ export class LoginPage implements OnInit {
     }
     if (this.validateForm.invalid) {
       return;
+    } else {
+      this.signIn();
     }
-    this.signIn();
   }
   signIn() {
     let data = {
@@ -359,7 +362,9 @@ export class LoginPage implements OnInit {
         }
       },
       error: (err) => {
-        this.toastService.presentToast(err.message);
+        // this.toastService.presentToast(err.message);
+        const { email } = err.error;
+        this.toastService.presentToast(email);
         console.log(err);
       },
     });

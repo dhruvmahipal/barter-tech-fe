@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button id="arrow" routerLink="/account">
+      <ion-button id="arrow" routerLink="/orders">
         <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -32,8 +32,12 @@
       *ngFor="let data of userOrderDetails?.menu.OrderData;let i=index"
     >
       <ion-col size="9.5"
-        ><p>
+        ><p style="display: flex; flex-direction: column">
           {{i+1}}){{data.menuitem_name}} * {{data.Quantity | number: '0.2-2'}}
+          <span *ngIf="data.flagSizeVisible" style="font-size: 12px"
+            >*({{data?.menuSizeInfo?.menuItemSizeName}} -
+            ${{data?.menuSizeInfo?.menuItemSizePrice| number: '0.2-2'}})</span
+          >
         </p></ion-col
       >
       <ion-col size="2.5"
@@ -48,14 +52,18 @@
     </ion-row>
     <hr class="hr" />
     <ion-row id="third_row">
-      <ion-col size="9.5"
+      <ion-col size="9.0"
         ><h4>Item total</h4>
         <p>(Gst Inclusive)</p></ion-col
       >
-      <ion-col size="2.5"><h4>${{finalPrice | number: '0.2-2'}}</h4></ion-col>
+      <ion-col size="3.0"><h4>${{finalPrice | number: '0.2-2'}}</h4></ion-col>
       <ion-col size="9.5"><h4>(GST Inclusive)</h4></ion-col>
       <ion-col size="2.5"
         ><h4>${{userOrderDetails?.orders.taxAmount}}</h4></ion-col
+      >
+      <ion-col size="9.5" *ngIf="couponAmount>0"><h4>Coupon</h4></ion-col>
+      <ion-col size="2.5" *ngIf="couponAmount>0"
+        ><h4>-${{couponAmount}}</h4></ion-col
       >
       <ion-col size="9.5" *ngIf="userOrderDetails?.orders.deliveryCharge!=null"
         ><h4>Delivery</h4></ion-col

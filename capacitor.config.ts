@@ -20,5 +20,8 @@ const config: CapacitorConfig = {
   bundledWebRuntime: false,
 };
 
-export default config;
+// "SplashScreen": {
+//       "launchShowDuration": 0
+//     },
 
+export default config;

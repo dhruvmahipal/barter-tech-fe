@@ -30,6 +30,7 @@ export class PaymentOptionPage implements OnInit {
 
   payment_method_types: any[] = [];
   platform: any;
+  reedempoints: any;
 
   clientSecretId: any;
   billing_addressline1: any;
@@ -46,6 +47,8 @@ export class PaymentOptionPage implements OnInit {
   customercount: any;
   taxAmount: any;
   deliveryCharge: any;
+  couponId: any;
+  totalCouponAmt: any;
   constructor(
     public router: Router,
     private authService: AuthService,
@@ -79,6 +82,9 @@ export class PaymentOptionPage implements OnInit {
         this.deliverytime = res.delivery_time;
         this.customercount = res.dinein_Customer_count;
         this.taxAmount = res.taxAmount;
+        this.couponId = res.couponId;
+        this.reedempoints = res.redeemPoints;
+        this.totalCouponAmt = res.totalCouponAmt;
         this.deliveryCharge =
           currentRoute == 'takeaway' || currentRoute == 'dinein'
             ? '0.00'
@@ -96,6 +102,9 @@ export class PaymentOptionPage implements OnInit {
         this.deliverytime = '';
         this.customercount = '';
         this.taxAmount = res.taxAmount;
+        this.couponId = res.couponId;
+        this.reedempoints = res.redeemPoints;
+        this.totalCouponAmt = res.totalCouponAmt;
         this.deliveryCharge =
           currentRoute == 'takeaway' || currentRoute == 'dinein'
             ? '0.00'
@@ -246,7 +255,7 @@ export class PaymentOptionPage implements OnInit {
     //console.log(this.items);
 
     let sendData = {
-      merchant_Id: '68',
+      merchant_Id: '45',
       company_id: this.company_id,
       billing_addressline1: this.billing_addressline1,
       billing_addressline2: this.billing_addressline2,
@@ -585,6 +594,9 @@ export class PaymentOptionPage implements OnInit {
       paymentResult: paymentResultStatus,
       id: id,
       orderType: type,
+      coupon_id: this.couponId,
+      redeemPoints: this.reedempoints,
+      totalCouponAmt: this.totalCouponAmt,
     };
     this.authService.getCardUpdate(data).subscribe({
       next: (data: any) => {

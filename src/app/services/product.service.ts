@@ -15,7 +15,7 @@ export class ProductService {
 
   getProductCategories(): Observable<any> {
     let param = new HttpParams();
-    param = param.append('merchant_id', '68');
+    param = param.append('merchant_id', '45');
     return this.httpClient.get<any>(this.categoryUrl, { params: param });
   }
 

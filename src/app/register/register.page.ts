@@ -145,54 +145,62 @@ export class RegisterPage implements OnInit {
 
   submitForm() {
     if (!this.validateForm1.valid) return;
-    let data = {
-      name: this.firstName_FormControl.value,
-      lastname: this.lastName_FormControl.value,
-      email: this.email_FormControl.value,
-      mobileNo: '+61' + this.mobile_FormControl.value,
-      gender: this.gender_FormControl.value,
-      dob:
-        this.monthOfBirth_FormControl.value +
-        '-' +
-        this.dateOfBirth_FormControl.value,
-      password: this.password_FormControl.value,
+    else {
+      let data = {
+        name: this.firstName_FormControl.value,
+        lastname: this.lastName_FormControl.value,
+        email: this.email_FormControl.value,
+        mobileNo: '+61' + this.mobile_FormControl.value,
+        gender: this.gender_FormControl.value,
+        dob:
+          this.monthOfBirth_FormControl.value +
+          '-' +
+          this.dateOfBirth_FormControl.value,
+        password: this.password_FormControl.value,
 
-      merchant_id: 68,
-      // device_model: this.device_model,
-      // device_platform: this.device_platform,
-      // device_uuid: this.device_uuid,
-      // device_version: this.device_version,
-      // device_manufacturer: this.device_manufacturer,
-      // registration_token: JSON.parse(localStorage.getItem('fcm_token')),
-    };
+        merchant_id: 45,
+        // device_model: this.device_model,
+        // device_platform: this.device_platform,
+        // device_uuid: this.device_uuid,
+        // device_version: this.device_version,
+        // device_manufacturer: this.device_manufacturer,
+        // registration_token: JSON.parse(localStorage.getItem('fcm_token')),
+      };
 
-    console.log('-----------------data signup-----------', data);
-    this.global.showLoader('Registering');
-    this.authService.registerUser(data).subscribe(
-      (res) => {
-        if (res.status) {
-          console.log('174', res);
-          console.log('175', res.data[0].data);
-          console.log('176', res.data[0].data?.email);
+      console.log('-----------------data signup-----------', data);
+      this.global.showLoader('Registering');
+      this.authService.registerUser(data).subscribe(
+        (res) => {
+          if (res.status) {
+            console.log('174', res);
+            console.log('175', res.data[0].data);
+            console.log('176', res.data[0].data?.email);
+            this.global.hideLoader();
+            // this.storage.store('token', res.data[0].data.token);
+            // this.storage.store('userDetails', res.data[0].data);
+            this.authService.couponSubject.next({});
+            localStorage.setItem('token', res.data[0].data.token);
+            localStorage.setItem(
+              'userDetails',
+              JSON.stringify(res.data[0].data)
+            );
+            this.toastService.presentToast(res.message);
+            this.router.navigate(['/account']);
+            this.validateForm1.reset();
+          } else {
+            this.toastService.presentToast(
+              'Email is already registered, Please login '
+            );
+          }
+        },
+        (error) => {
           this.global.hideLoader();
-          // this.storage.store('token', res.data[0].data.token);
-          // this.storage.store('userDetails', res.data[0].data);
-          localStorage.setItem('token', res.data[0].data.token);
-          localStorage.setItem('userDetails', JSON.stringify(res.data[0].data));
-          this.toastService.presentToast(res.message);
-          this.router.navigate(['/account']);
-          this.validateForm1.reset();
-        } else {
-          this.toastService.presentToast('Email already exists');
+          console.log(error.error);
+          const { email } = error.error;
+          this.toastService.presentToast(error.error.message);
         }
-      },
-      (error) => {
-        this.global.hideLoader();
-        console.log(error.error);
-        const { email } = error.error;
-        this.toastService.presentToast(error.error.message);
-      }
-    );
+      );
+    }
   }
   get officialEmail() {
     return this.validateForm1.get('email');
