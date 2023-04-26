@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-searchbar
       animated="true"
-      debounce="800"
+      debounce="900"
       #searchInput
       (ionChange)="onSearchChange($event)"
     ></ion-searchbar>
@@ -19,134 +19,276 @@
   <!-- <h5>3 items found</h5> -->
   <!-- *ngIf="restaurants.length>0" ion list condition-->
 
-  <app-empty-screen
-    *ngIf=" searchItems?.length==0 || query?.length==0"
-    [model]="model"
-  ></app-empty-screen>
-  <ion-list *ngIf="!isLoading" style="z-index: 1; position: relative">
-    <ion-list-header>
-      <ion-label>
-        <h2 *ngIf="searchItems?.length>0">Search results for "{{query}}"</h2>
-      </ion-label>
-    </ion-list-header>
-    <ion-row>
-      <ion-col>
-        <div *ngIf="itemsFound && query?.length>=3">
-          <h5>{{itemsFound}} items found</h5>
-        </div>
-      </ion-col>
-    </ion-row>
-
-    <ion-grid>
-      <ion-row *ngFor="let item of searchItems; let index = index">
-        <div id="head">
-          <ion-col size="8">
-            <div id="mid_sec">
-              <h4>{{item.menuItemName}}</h4>
-              <p *ngIf="routercurrent=='delivery'">
-                $ {{item.deliveryPrice | number: '0.2-2'}}
-              </p>
-              <p *ngIf="routercurrent=='dinein'">
-                $ {{item.dineInPrice | number: '0.2-2'}}
-              </p>
-              <p *ngIf="routercurrent=='takeaway'">
-                $ {{item.takeAwayPrice | number: '0.2-2'}}
-              </p>
-              <!-- <p>${{item.unitPrice}}</p> -->
-              <p>{{item.MenuItemNote}}</p>
-            </div>
-          </ion-col>
-          <ion-col size="4">
-            <div id="bottom_sec">
-              <div *ngIf="GetFilename(item.menuItemimageUrl)=='noitemimage'">
-                <img src="assets/img/No-Image-Placeholder.svg" />
-              </div>
-              <div *ngIf="GetFilename(item.menuItemimageUrl)!='noitemimage'">
-                <img src="{{item.menuItemimageUrl}}" />
-              </div>
-
-              <div
-                class="cart_card_control_span"
-                *ngIf="item.product_quantity >= 1"
-              >
-                <span
-                  class="cart_mod_btn"
-                  (click)="subQty(item,index)"
-                  role="button"
-                  tabindex="0"
-                >
-                  <span class="cart_remove_icon">–</span>
-                </span>
-
-                <span class="cart_qty_span">
-                  <p style="display: inline">{{ item.product_quantity }}</p>
-                </span>
-
-                <span
-                  class="cart_mod_btn"
-                  role="button"
-                  (click)="addQty(item,index)"
-                  tabindex="0"
-                >
-                  <span class="cart_add_icon">+</span>
-                </span>
-              </div>
-              <ion-button
-                *ngIf="item.product_quantity == 0 && item.itemStock=='Y'"
-                (click)="add(item)"
-                class="btn-apply"
-                color="warning"
-                [disabled]="item.buttonTitle=='Not Avail'"
-                >{{item.buttonTitle}}
-              </ion-button>
-              <ion-button
-                *ngIf="item.itemStock!='Y'"
-                class="btn-apply"
-                color="warning"
-                [disabled]="true"
-                >NO STOCK
-              </ion-button>
-            </div>
-          </ion-col>
-        </div>
-      </ion-row>
-    </ion-grid>
-  </ion-list>
-  <ion-tabs
-    class="tabs"
-    [ngStyle]="{'height': (searchItems?.length==0 || query?.length==0 || searchItems?.length<4 ) ? '64%' : '10%'}"
+  <div
+    style="
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      height: 100%;
+      overflow-y: auto;
+    "
   >
-    <ion-tab-bar slot="bottom" style="border-top: 1px solid #000">
-      <ion-tab-button routerLink="/maindelivery/delivery" class="two">
-        <ion-icon name="home"></ion-icon>
-        <ion-label>Home</ion-label>
-      </ion-tab-button>
+    <div style="z-index: 1; overflow-y: scroll; height: 100vh">
+      <app-empty-screen
+        *ngIf=" searchItems?.length==0 || query?.length==0"
+        [model]="model"
+      ></app-empty-screen>
+      <ion-list
+        *ngIf="!isLoading"
+        style="position: relative; padding: 0; overflow-y: scroll"
+      >
+        <ion-list-header>
+          <ion-label>
+            <h2 *ngIf="searchItems?.length>0">
+              Search results for "{{query}}"
+            </h2>
+          </ion-label>
+        </ion-list-header>
+        <ion-row>
+          <ion-col>
+            <div *ngIf="itemsFound && query?.length>=3">
+              <h5>{{itemsFound}} items found</h5>
+            </div>
+          </ion-col>
+        </ion-row>
 
-      <ion-tab-button routerLink="/search" selected="true" class="two">
-        <ion-icon name="search"></ion-icon>
-        <ion-label>Search</ion-label>
-      </ion-tab-button>
+        <ion-grid>
+          <ion-row *ngFor="let item of searchItems; let index = index">
+            <div id="head">
+              <ion-col size="8">
+                <div id="mid_sec">
+                  <h4>{{item.menuItemName}}</h4>
+                  <p *ngIf="routercurrent=='delivery'">
+                    $ {{item.deliveryPrice | number: '0.2-2'}}
+                  </p>
+                  <p *ngIf="routercurrent=='dinein'">
+                    $ {{item.dineInPrice | number: '0.2-2'}}
+                  </p>
+                  <p *ngIf="routercurrent=='takeaway'">
+                    $ {{item.takeAwayPrice | number: '0.2-2'}}
+                  </p>
+                  <!-- <p>${{item.unitPrice}}</p> -->
+                  <p>{{item.MenuItemNote}}</p>
+                </div>
+              </ion-col>
+              <ion-col size="4">
+                <div id="bottom_sec">
+                  <div
+                    *ngIf="GetFilename(item.menuItemimageUrl)=='noitemimage'"
+                  >
+                    <img src="assets/img/No-Image-Placeholder.svg" />
+                  </div>
+                  <div
+                    *ngIf="GetFilename(item.menuItemimageUrl)!='noitemimage'"
+                  >
+                    <img src="{{item.menuItemimageUrl}}" />
+                  </div>
 
-      <ion-tab-button routerLink="/cart" class="two">
-        <ion-icon name="cart"></ion-icon>
-        <ion-label>Cart</ion-label>
-        <ion-badge
-          color="danger"
-          style="
-            position: absolute;
-            top: 0;
-            left: calc(60%);
-            font-size: 10px;
-            line-height: 14px;
-          "
-          >{{cartItemsLength}}</ion-badge
-        >
-      </ion-tab-button>
+                  <div
+                    class="cart_card_control_span"
+                    *ngIf="item.product_quantity >= 1"
+                  >
+                    <span
+                      class="cart_mod_btn"
+                      (click)="subQty(item,index)"
+                      role="button"
+                      tabindex="0"
+                    >
+                      <span class="cart_remove_icon">–</span>
+                    </span>
 
-      <ion-tab-button routerLink="/account" class="two">
-        <ion-icon name="person-circle-outline"></ion-icon>
-        <ion-label>Account</ion-label>
-      </ion-tab-button>
-    </ion-tab-bar>
-  </ion-tabs>
+                    <span class="cart_qty_span">
+                      <p style="display: inline">{{ item.product_quantity }}</p>
+                    </span>
+
+                    <span
+                      class="cart_mod_btn"
+                      role="button"
+                      (click)="openpop(item.options,item)"
+                      tabindex="0"
+                    >
+                      <span class="cart_add_icon">+</span>
+                    </span>
+                  </div>
+                  <ion-button
+                    *ngIf="item.product_quantity == 0 && item.itemStock=='Y'"
+                    (click)="openpop(item.options, item)"
+                    class="btn-apply"
+                    color="warning"
+                    [disabled]="item.buttonTitle=='Not Avail'"
+                    >{{item.buttonTitle}}
+                  </ion-button>
+                  <ion-button
+                    *ngIf="item.itemStock!='Y'"
+                    class="btn-apply"
+                    color="warning"
+                    [disabled]="true"
+                    >NO STOCK
+                  </ion-button>
+                  <p
+                    *ngIf="item.options.optionGroups.length>0 || item.options.size.length>1"
+                  >
+                    Customisable
+                  </p>
+                </div>
+              </ion-col>
+            </div>
+          </ion-row>
+        </ion-grid>
+      </ion-list>
+      <div id="popup1" class="pppp" style="display: none">
+        <div id="close" (click)="notShow()">x</div>
+        <br />
+        <form id="newpop">
+          <div id="content">
+            <ng-container *ngIf="this.tempItem.IsSizeApplicable == '1'">
+              <label
+                class="main"
+                [ngClass]="{'required':this.tempItem.isOptionMandatory =='1'}"
+                >Size</label
+              >
+              <ion-radio-group
+                [allowEmptySelection]="true"
+                [(ngModel)]="selectedSize"
+                (ngModelChange)="onItemSelect(null)"
+                name="productSize"
+              >
+                <ion-item *ngFor="let item of tempItem.options.size">
+                  <ion-label
+                    >{{ item?.size_name }}
+                    <span>
+                      &nbsp; - &nbsp; $ {{ item?.displaySizeValue }}</span
+                    ></ion-label
+                  >
+                  <ion-radio slot="end" [value]="item"></ion-radio>
+                </ion-item>
+              </ion-radio-group>
+            </ng-container>
+            <ng-container *ngIf="this.tempItem.IsoptionApplicable == '1'">
+              <label
+                class="main"
+                [ngClass]="{'required':this.tempItem.isOptionMandatory =='1'}"
+                >{{this.groupName}}</label
+              >
+              <div
+                class="form-check"
+                *ngFor="let ls of newValue; let index=index"
+              >
+                <input
+                  class="form-check-input"
+                  name="checkbox{{index}}"
+                  type="checkbox"
+                  value="{{ls.optionitemname}}"
+                  [(ngModel)]="ls.selected"
+                  (change)="onItemSelect(ls,'first',$event)"
+                  id="flexCheckDefault{{index}}"
+                />
+                <label class="form-check-label" for="flexCheckDefault{{index}}"
+                  >{{ls.optionitemname}} &nbsp;-&nbsp;
+                  <span>${{ls.displayValue}}</span></label
+                >
+              </div>
+            </ng-container>
+            <ng-container *ngIf="newValue1?.length>0">
+              <label
+                class="main"
+                [ngClass]="{'required':this.tempItem.isOptionMandatory =='1'}"
+                >{{groupName1}}</label
+              >
+              <div
+                class="form-check"
+                *ngFor="let ls of newValue1 let index = index"
+              >
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  name="checkboxx{{index}}"
+                  value="{{ls.optionitemname}}"
+                  [(ngModel)]="ls.selected"
+                  (change)="onItemSelect(ls,'second',$event)"
+                  id="flexCheckDefaultt{{index}}"
+                />
+                <label class="form-check-label" for="flexCheckDefaultt{{index}}"
+                  >{{ls.optionitemname}} &nbsp;-&nbsp;
+                  <span>${{ls.displayOptionValue}}</span></label
+                >
+              </div>
+            </ng-container>
+            <ng-container *ngIf="newValue2?.length>0">
+              <label
+                class="main"
+                [ngClass]="{'required':this.tempItem.isOptionMandatory =='1'}"
+                >{{groupName2}}</label
+              >
+              <div
+                class="form-check"
+                *ngFor="let ls of newValue2 let index = index"
+              >
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  name="checkboxxx{{index}}"
+                  value="{{ls.optionitemname}}"
+                  [(ngModel)]="ls.selected"
+                  (change)="onItemSelect(ls,'third',$event)"
+                  id="flexCheckDefaulttt{{index}}"
+                />
+                <label
+                  class="form-check-label"
+                  for="flexCheckDefaulttt{{index}}"
+                  >{{ls.optionitemname}} &nbsp;-&nbsp;
+                  <span>${{ls.displayOptionValue}}</span></label
+                >
+              </div>
+            </ng-container>
+            <ion-button
+              type="submit"
+              class="neww"
+              color="warning"
+              [disabled]="this.tempItem.isOptionMandatory ? isCartValid: false"
+              (click)="addToCart()"
+              >ADD TO CART</ion-button
+            >
+          </div>
+        </form>
+      </div>
+    </div>
+    <ion-tabs class="tabs">
+      <ion-tab-bar
+        slot="bottom"
+        style="border-top: 1px solid #000; z-index: 1; position: relative"
+      >
+        <ion-tab-button (click)="homeButton()" class="two">
+          <ion-icon name="home"></ion-icon>
+          <ion-label>Home</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button routerLink="/search" selected="true" class="two">
+          <ion-icon name="search"></ion-icon>
+          <ion-label>Search</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button (click)="cartButton()" class="two">
+          <ion-icon name="cart"></ion-icon>
+          <ion-label>Cart</ion-label>
+          <ion-badge
+            color="danger"
+            style="
+              position: absolute;
+              top: 0;
+              left: calc(60%);
+              font-size: 10px;
+              line-height: 14px;
+            "
+            >{{cartItemsLength}}</ion-badge
+          >
+        </ion-tab-button>
+
+        <ion-tab-button (click)="accountButton()" class="two">
+          <ion-icon name="person-circle-outline"></ion-icon>
+          <ion-label>Account</ion-label>
+        </ion-tab-button>
+      </ion-tab-bar>
+    </ion-tabs>
+  </div>
 </ion-content>

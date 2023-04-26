@@ -186,6 +186,7 @@ export class CartPage implements OnInit {
         this.isCouponApplied = false;
       }
     });
+    console.log({ test: this.isCouponApplied, test2: this.isCouponUsed });
     this.authService.couponSubject.subscribe((res: any) => {
       console.log({ res });
       if (res != 'invalid' && Object.keys(res).length != 0) {
@@ -235,6 +236,8 @@ export class CartPage implements OnInit {
             this.toastService.presentToast(
               ' Your total purchase amount doest not satisfy the minimum purchase condition'
             );
+            res = null;
+            // this.authService.couponSubject.next(null);
             this.appliedCoupon = null;
 
             // this.appliedCouponCode = '';

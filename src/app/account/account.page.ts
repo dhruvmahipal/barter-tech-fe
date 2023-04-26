@@ -97,7 +97,7 @@ export class AccountPage implements OnInit {
       // console.log(res);
       // console.log(this.router.url);
       this.getData();
-      this.getAddress();
+      this.getAddressData();
       this.authService.badgeDataSubject.subscribe((res) => {
         console.log(res, 'heelo');
         console.log(Object.keys(res), 'byee');
@@ -508,14 +508,13 @@ export class AccountPage implements OnInit {
 
     await alert.present();
   }
-  getAddress() {
+  getAddressData() {
     this.authService.getAddress().subscribe({
       next: (data: any) => {
         console.log(data);
         this.userAddress = data.status;
         if (data.status == false) {
           this.cartItemsLength = 0;
-
           this.presentAlert();
         }
         this.global.hideLoader();

@@ -66,7 +66,7 @@ export class LoginPage implements OnInit {
         null,
         [Validators.required, Validators.pattern(this.emailPattern)],
       ],
-      password: [null, [Validators.required]],
+      password: [null, [Validators.required, Validators.minLength(6)]],
     });
 
     // this.authService.testData().subscribe({
@@ -363,8 +363,8 @@ export class LoginPage implements OnInit {
       },
       error: (err) => {
         // this.toastService.presentToast(err.message);
-        const { email } = err.error;
-        this.toastService.presentToast(email);
+        const { email, password } = err.error;
+        this.toastService.presentToast(email || password);
         console.log(err);
       },
     });

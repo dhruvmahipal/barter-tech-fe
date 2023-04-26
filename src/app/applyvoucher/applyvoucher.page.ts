@@ -20,6 +20,7 @@ export class ApplyvoucherPage implements OnInit {
   maxPointUse: any;
   minPointUse: any;
   rulePurchaseAmount: any;
+  pointsToShow: any;
   point_PerAmount: any;
   constructor(
     private authService: AuthService,
@@ -94,6 +95,7 @@ export class ApplyvoucherPage implements OnInit {
         this.rulePurchaseAmount =
           this.getBalance.pointSetup.apply_point_overAmount;
         this.totalBalance = this.getBalance.availableBalance;
+        this.pointsToShow = this.getBalance.availableBalance;
         this.totalBalance =
           this.totalBalance > this.maxPointUse ? 10 : this.totalBalance;
         for (

@@ -32,7 +32,15 @@
             >
             <h3>{{item.menuItemName}}</h3>
           </div>
-          <p>${{item.displaySizeValue| number : '1.2-2'}}</p>
+          <p *ngIf="item?.options.size[0]==null">
+            ${{item.displaySizeValue| number : '1.2-2'}}
+          </p>
+          <ng-container *ngFor="let sz of item?.options.size">
+            <p *ngIf="sz?.size_name">
+              <span>{{sz?.size_name}}</span>
+              <span> &nbsp; ${{sz?.displaySizeValue}}</span>
+            </p>
+          </ng-container>
           <ng-container
             *ngFor="let nm of item?.options?.optionGroups[0]?.optionItems"
           >
@@ -57,12 +65,7 @@
               <span>${{subItem1.displayOptionValue}}</span>
             </p>
           </ng-container>
-          <ng-container *ngFor="let sz of item?.options.size">
-            <p *ngIf="sz?.size_name">
-              <span>{{sz?.size_name}}</span>
-              <!-- <small> &nbsp; ${{sz?.displaySizeValue}}</small> -->
-            </p>
-          </ng-container>
+
           <ng-container>
             <!-- <p>
               <span>GST</span
@@ -311,11 +314,12 @@
           </div>
         </ion-col>
 
-        <ion-col size="5.5" (click)="makePayment()">
+        <ion-col size="5.5">
           <ion-button
             class="button1"
             expand="block"
             color="white"
+            (click)="makePayment()"
             [disabled]="showWarning"
             >MAKE PAYMENT</ion-button
           >

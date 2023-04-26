@@ -20,6 +20,7 @@ export class OrderfilledPage implements OnInit {
   userOrderSizeInfo: any;
   flagSizeVisible: boolean = false;
   couponAmount: number = 0;
+  reedemAmount: number = 0;
   // menu: any[] = [
   //   {
   //     menuitem_name: 'Hara bhara Kabab(6 Pieces)',
@@ -81,6 +82,7 @@ export class OrderfilledPage implements OnInit {
         if (data.status) {
           this.userOrderDetails = data.data.order_details;
           this.couponAmount = this.userOrderDetails?.orders?.totalCouponAmt;
+          this.reedemAmount = this.userOrderDetails?.orders?.pointUsed;
           console.log(this.couponAmount);
           this.userOrderDetails?.menu?.OrderData.map((x) => {
             if (!!x.menuSizeInfo && Object.keys(x.menuSizeInfo).length > 0) {
@@ -129,7 +131,10 @@ export class OrderfilledPage implements OnInit {
     // this.finalPrice = this.finalPrice;
     console.log(this.finalPrice);
     this.finalMoney =
-      this.finalPrice + Number(delivery) - Number(this.couponAmount);
+      this.finalPrice +
+      Number(delivery) -
+      Number(this.couponAmount) -
+      Number(this.reedemAmount);
     console.log(this.finalMoney);
   }
 

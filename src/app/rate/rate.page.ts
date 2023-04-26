@@ -18,7 +18,7 @@ export class RatePage implements OnInit {
     private authService: AuthService,
     private toastService: ToastService,
     private router: Router,
-    private global: GlobalService,
+    private global: GlobalService
   ) {}
 
   ngOnInit() {}
@@ -35,7 +35,7 @@ export class RatePage implements OnInit {
 
   async closeModal() {
     let data = {
-      merchantId: 4,
+      merchantId: 45,
       food_rating: this.foodStar,
       delivery_rating: this.deliveryStar,
     };
@@ -54,7 +54,7 @@ export class RatePage implements OnInit {
     const onClosedData: string = 'Wrapped Up!';
     await this.modalController.dismiss(onClosedData);
   }
-  async crossButton(){
+  async crossButton() {
     const onClosedData: string = 'Wrapped Up!';
     await this.modalController.dismiss(onClosedData);
   }

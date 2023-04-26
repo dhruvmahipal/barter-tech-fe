@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button routerLink="/login" id="arrow">
+      <ion-button (click)="backToLogin()" id="arrow">
         <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -30,7 +30,10 @@
         placeholder="Enter First Name"
         formControlName="firstName"
       ></ion-input>
-      <small *ngIf="firstName_FormControl.hasError('required') && firstName_FormControl.touched"><b style="color:red;">First Name is required</b></small>
+      <small
+        *ngIf="firstName_FormControl.hasError('required') && firstName_FormControl.touched"
+        ><b style="color: red">First Name is required</b></small
+      >
     </div>
     <div>
       <ion-label class="required">Last Name</ion-label>
@@ -39,7 +42,10 @@
         placeholder="Enter Last Name"
         formControlName="lastName"
       ></ion-input>
-      <small *ngIf="lastName_FormControl.hasError('required') && lastName_FormControl.touched"><b style="color:red;">Last Name is required</b></small>
+      <small
+        *ngIf="lastName_FormControl.hasError('required') && lastName_FormControl.touched"
+        ><b style="color: red">Last Name is required</b></small
+      >
     </div>
     <div>
       <ion-label class="required">Email</ion-label>
@@ -48,8 +54,13 @@
         placeholder="Enter Email"
         formControlName="email"
       ></ion-input>
-      <small *ngIf="email_FormControl.hasError('required') && email_FormControl.touched "><b style="color:red;">Email is required</b></small>
-      <small *ngIf="officialEmail.errors?.pattern"><b style="color:red;"> Email is not valid</b></small>
+      <small
+        *ngIf="email_FormControl.hasError('required') && email_FormControl.touched "
+        ><b style="color: red">Email is required</b></small
+      >
+      <small *ngIf="officialEmail.errors?.pattern"
+        ><b style="color: red"> Email is not valid</b></small
+      >
     </div>
     <div>
       <ion-label class="required">Mobile</ion-label>
@@ -60,15 +71,21 @@
         placeholder="Enter Number"
         formControlName="mobile"
       ></ion-input>
-      <small *ngIf="mobile_FormControl.hasError('required') && mobile_FormControl.touched "><b style="color:red;">Mobile No is required</b></small>
-      <small *ngIf="mobile_FormControl.hasError('maxlength') && mobile_FormControl.touched "><b style="color:red;">Mobile No cannot be greater than 10</b></small>
+      <small
+        *ngIf="mobile_FormControl.hasError('required') && mobile_FormControl.touched "
+        ><b style="color: red">Mobile No is required</b></small
+      >
+      <small
+        *ngIf="mobile_FormControl.hasError('maxlength') && mobile_FormControl.touched "
+        ><b style="color: red">Mobile No cannot be greater than 10</b></small
+      >
     </div>
     <div>
       <ion-label>Gender</ion-label>
       <ion-list class="maleList" lines="none">
         <ion-item>
           <ion-select
-          class="gender"
+            class="gender"
             interface="popover"
             placeholder="Male"
             formControlName="gender"
@@ -84,53 +101,59 @@
       <ion-label class="required">DOB</ion-label>
       <div class="dateOf">
         <ion-list class="tag" lines="none">
-        <ion-item>
-          <ion-select
-           class="month"
-            interface="action-sheet"
-            placeholder="Enter Month"
-            formControlName="monthOfBirth"
-          >
-          <ion-select-option value="january">January</ion-select-option>
-          <ion-select-option value="february">February</ion-select-option>
-          <ion-select-option value="march">March</ion-select-option>
-          <ion-select-option value="april">April</ion-select-option>
-          <ion-select-option value="may">May</ion-select-option>
-          <ion-select-option value="june">June</ion-select-option>
-          <ion-select-option value="july">July</ion-select-option>
-          <ion-select-option value="august">August</ion-select-option>
-          <ion-select-option value="september">September</ion-select-option>
-          <ion-select-option value="october">October</ion-select-option>
-          <ion-select-option value="november">November</ion-select-option>
-          <ion-select-option value="december">December</ion-select-option>
-          </ion-select>
-        </ion-item>
-      </ion-list>
+          <ion-item>
+            <ion-select
+              class="month"
+              interface="action-sheet"
+              placeholder="Enter Month"
+              formControlName="monthOfBirth"
+            >
+              <ion-select-option value="january">January</ion-select-option>
+              <ion-select-option value="february">February</ion-select-option>
+              <ion-select-option value="march">March</ion-select-option>
+              <ion-select-option value="april">April</ion-select-option>
+              <ion-select-option value="may">May</ion-select-option>
+              <ion-select-option value="june">June</ion-select-option>
+              <ion-select-option value="july">July</ion-select-option>
+              <ion-select-option value="august">August</ion-select-option>
+              <ion-select-option value="september">September</ion-select-option>
+              <ion-select-option value="october">October</ion-select-option>
+              <ion-select-option value="november">November</ion-select-option>
+              <ion-select-option value="december">December</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-list>
         <ion-list class="tag" lines="none">
           <ion-item>
             <ion-select
-             class="date"
+              class="date"
               interface="action-sheet"
               placeholder="Enter Date"
               formControlName="dateOfBirth"
             >
-            <ion-select-option *ngFor="let data of array"
-            [value]="data">{{data}}</ion-select-option>
+              <ion-select-option *ngFor="let data of array" [value]="data"
+                >{{data}}</ion-select-option
+              >
             </ion-select>
           </ion-item>
         </ion-list>
-        
       </div>
-     
+
       <!-- <ion-input
         placeholder="Enter Input"
         type="date"
         formControlName="dateOfBirth"
         [max]="getToday()"
       ></ion-input> -->
-      
-      <small *ngIf="monthOfBirth_FormControl.hasError('required') && monthOfBirth_FormControl.touched "><b style="color:red;">Month is required</b></small>&nbsp;&nbsp;
-      <small *ngIf="dateOfBirth_FormControl.hasError('required') && dateOfBirth_FormControl.touched "><b style="color:red;">DOB is required</b></small>
+
+      <small
+        *ngIf="monthOfBirth_FormControl.hasError('required') && monthOfBirth_FormControl.touched "
+        ><b style="color: red">Month is required</b></small
+      >&nbsp;&nbsp;
+      <small
+        *ngIf="dateOfBirth_FormControl.hasError('required') && dateOfBirth_FormControl.touched "
+        ><b style="color: red">DOB is required</b></small
+      >
     </div>
     <div>
       <ion-label class="required">Password</ion-label>
@@ -139,8 +162,14 @@
         placeholder="Enter Password"
         formControlName="password"
       ></ion-input>
-      <small *ngIf="password_FormControl.hasError('required') && password_FormControl.touched "><b style="color:red;">Password is required</b></small>
-      <small *ngIf="password_FormControl.hasError('minlength') && password_FormControl.touched "><b style="color:red;">Password must be of 6 characters</b></small>
+      <small
+        *ngIf="password_FormControl.hasError('required') && password_FormControl.touched "
+        ><b style="color: red">Password is required</b></small
+      >
+      <small
+        *ngIf="password_FormControl.hasError('minlength') && password_FormControl.touched "
+        ><b style="color: red">Password must be of 6 characters</b></small
+      >
     </div>
     <div>
       <ion-label class="required">Confirm Password</ion-label>
@@ -149,8 +178,14 @@
         placeholder="Enter Password"
         formControlName="confirmPassword"
       ></ion-input>
-      <small *ngIf="confirmpassword_FormControl.hasError('required') && confirmpassword_FormControl.touched "><b style="color:red;">Password is required</b></small>
-      <small *ngIf="confirmpassword_FormControl.hasError('minlength') && confirmpassword_FormControl.touched "><b style="color:red;">Password must be of 6 characters</b></small>
+      <small
+        *ngIf="confirmpassword_FormControl.hasError('required') && confirmpassword_FormControl.touched "
+        ><b style="color: red">Password is required</b></small
+      >
+      <small
+        *ngIf="confirmpassword_FormControl.hasError('minlength') && confirmpassword_FormControl.touched "
+        ><b style="color: red">Password must be of 6 characters</b></small
+      >
     </div>
     <div
       style="color: red"

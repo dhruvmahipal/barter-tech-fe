@@ -84,7 +84,14 @@ export class RegisterPage implements OnInit {
         password: ['', [Validators.required, Validators.minLength(6)]],
         confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
         gender: [null],
-        mobile: [null, [Validators.required, Validators.maxLength(10)]],
+        mobile: [
+          null,
+          [
+            Validators.required,
+            Validators.minLength(10),
+            Validators.maxLength(10),
+          ],
+        ],
         dateOfBirth: [null, [Validators.required]],
         monthOfBirth: [null, [Validators.required]],
       },
@@ -196,11 +203,18 @@ export class RegisterPage implements OnInit {
         (error) => {
           this.global.hideLoader();
           console.log(error.error);
-          const { email } = error.error;
-          this.toastService.presentToast(error.error.message);
+          const { email, name } = error?.error;
+          console.log(name);
+          this.toastService.presentToast(
+            (email && email[0]) || (name && name[0])
+          );
         }
       );
     }
+  }
+  backToLogin() {
+    this.router.navigate(['/login']);
+    this.validateForm1.reset();
   }
   get officialEmail() {
     return this.validateForm1.get('email');

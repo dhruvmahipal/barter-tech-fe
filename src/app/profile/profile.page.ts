@@ -66,7 +66,14 @@ export class ProfilePage implements OnInit {
         null,
         [Validators.required, Validators.pattern(this.emailPattern)],
       ],
-      mobile: [null, [Validators.required, Validators.maxLength(10)]],
+      mobile: [
+        null,
+        [
+          Validators.required,
+          Validators.minLength(10),
+          Validators.maxLength(10),
+        ],
+      ],
       dateOfBirth: [null, [Validators.required]],
       monthOfBirth: [null, [Validators.required]],
       gender: [null],
