@@ -1,10 +1,16 @@
 <ion-content>
-  <div id="top_img">
+  <!-- <div id="top_img">
     <img src="assets/Stirling-Arms_Logo.png" class="image-header" />
-  </div>
+  </div> -->
+  <div></div>
+  <img
+    src="assets/logoOriginal.png"
+    class="image-header"
+    style="background-color: #a79c8b"
+  />
   <div class="text-container">
     <ion-text color="medium">
-      <h1>STIRLING ARMS</h1>
+      <h1>ORDER POINT</h1>
     </ion-text>
     <ion-text color="medium">
       <p>Doing.Hotel.Different</p>
@@ -32,7 +38,12 @@
         placeholder="Enter Password"
         formControlName="password"
       ></ion-input>
+      <small
+        *ngIf="password_FormControl.hasError('minlength') && password_FormControl.touched "
+        ><b style="color: red">Password must be of 6 characters</b></small
+      >
     </div>
+
     <div id="forget">
       <a routerLink="/forgetpassword">Forgot Password</a>
     </div>
@@ -63,10 +74,14 @@
       <ion-button color="danger" class="btn3" (click)="loginwithgoogle()">
         <ion-icon name="logo-google"></ion-icon>Google
       </ion-button>
-      
     </div>
     <div id="social">
-      <ion-button color="dark" class="btn4" (click)="loginwithapple()" *ngIf="showAppleSignIn">
+      <ion-button
+        color="dark"
+        class="btn4"
+        (click)="loginwithapple()"
+        *ngIf="showAppleSignIn"
+      >
         <ion-icon name="logo-apple"></ion-icon>Apple
       </ion-button>
     </div>

@@ -75,8 +75,8 @@ export class RegisterPage implements OnInit {
   ) {
     this.validateForm1 = this.fb.group(
       {
-        firstName: [null, [Validators.required]],
-        lastName: [null, [Validators.required]],
+        firstName: [null, [Validators.required, Validators.minLength(4)]],
+        lastName: [null, [Validators.required, Validators.minLength(3)]],
         email: [
           null,
           [Validators.required, Validators.pattern(this.emailPattern)],
@@ -206,7 +206,7 @@ export class RegisterPage implements OnInit {
           const { email, name } = error?.error;
           console.log(name);
           this.toastService.presentToast(
-            (email && email[0]) || (name && name[0])
+            (email && email[0]) || (name && name[0]) || error.error.message
           );
         }
       );

@@ -25,6 +25,7 @@ import {
   SignInWithAppleResponse,
 } from '@capacitor-community/apple-sign-in';
 import { AlertController } from '@ionic/angular';
+import { GlobalService } from '../services/global.service';
 
 @Component({
   selector: 'app-login',
@@ -54,7 +55,8 @@ export class LoginPage implements OnInit {
     private storage: StorageService,
     private http: HttpClient,
     private _route: ActivatedRoute,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private global: GlobalService
   ) {
     // this._route.params.subscribe((res) => {
     //   // console.log(res);
@@ -337,8 +339,10 @@ export class LoginPage implements OnInit {
     };
     console.log(data);
     this.authService.badgeDataSubject.next(0);
+    this.global.showLoader('Signing in');
     this.authService.login(data).subscribe({
       next: (data) => {
+        this.global.hideLoader();
         console.log(data);
         if (data.status) {
           localStorage.setItem(
@@ -362,6 +366,7 @@ export class LoginPage implements OnInit {
         }
       },
       error: (err) => {
+        this.global.hideLoader();
         // this.toastService.presentToast(err.message);
         const { email, password } = err.error;
         this.toastService.presentToast(email || password);

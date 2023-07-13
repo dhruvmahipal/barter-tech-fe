@@ -33,7 +33,7 @@
   padding-left: 10px !important;
 }
 
-#form ion-datetime{
+#form ion-datetime {
   border: 2px solid #000;
   margin: 0;
   margin-top: 12px;
@@ -101,8 +101,8 @@ ion-title {
 //   margin-left: -20px;
 //   padding-left: 6px !important;
 // }
-.maleList{
-    width: 90vw;
+.maleList {
+  width: 90vw;
   margin-left: -20px;
   padding-left: 6px !important;
 }
@@ -116,12 +116,19 @@ ion-title {
   width: 100%;
 }
 .required:after {
-  content:" *";
+  content: " *";
   color: red;
 }
-.dateOf{
+.dateOf {
   display: flex;
-    justify-content: space-between;
+  justify-content: space-between;
+}
+#form ion-input[type="date"] {
+  // display:block;
+  // -webkit-appearance: textfield;
+  // -moz-appearance: textfield;
+  // min-height: 1.2em;
+  min-height: 48px;
 }
 // ion-modal {
 //   &.center {

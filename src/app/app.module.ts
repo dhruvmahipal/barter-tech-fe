@@ -29,11 +29,17 @@ import { CartPage } from './cart/cart.page';
 import { ImagePicker } from '@awesome-cordova-plugins/image-picker/ngx';
 import { WebView } from '@awesome-cordova-plugins/ionic-webview/ngx';
 import { IonicSelectableModule } from 'ionic-selectable';
+import { DateTimeFormatFilterPipe } from './date-time-format-filter.pipe';
 
 // const stripe : any = StripeOriginal;
 
 @NgModule({
-  declarations: [AppComponent, PaymentOptionPage, CartPage],
+  declarations: [
+    AppComponent,
+    PaymentOptionPage,
+    CartPage,
+    DateTimeFormatFilterPipe,
+  ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
@@ -43,6 +49,7 @@ import { IonicSelectableModule } from 'ionic-selectable';
     IonicStorageModule.forRoot(),
     IonicSelectableModule,
   ],
+  // exports: [DateTimeFormatFilterPipe],
   providers: [
     // stripe,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

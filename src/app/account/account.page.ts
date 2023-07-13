@@ -240,9 +240,9 @@ export class AccountPage implements OnInit {
 
   getData() {
     this.getBalanceData();
-    this.global.showLoader('Loading Data');
     this.authService.getProfile().subscribe({
       next: (data: any) => {
+        this.global.showLoader('Loading Data');
         console.log(data);
         this.userData = data.data;
         this.percentage = this.calculateProfilePer(this.userData);

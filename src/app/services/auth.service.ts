@@ -18,7 +18,7 @@ import { AlertController } from '@ionic/angular';
 export class AuthService {
   token: string = '';
   url: string = environment.serverUrl;
-  url2: string = 'https://barter-tech.antino.ca/api';
+  url2: string = 'https://api.orderpoint.net.au/api';
   // url3: string =
   //   'https://op-au-uat-cusapp-api.azurewebsites.net/api/sendresponse';
   url4: string = 'https://merchantapi.orderpoint.net.au/api/v1';

@@ -21,15 +21,16 @@
       <div class="empty-state__message">THERE ARE NO AVAILABLE ORDERS</div>
     </div>
   </div>
-  <ion-grid *ngIf="!isDataVisible">
+  <ion-grid
+    *ngIf="!isDataVisible"
+    style="height: 100vh; position: relative; z-index: 99"
+  >
     <ion-row
       *ngFor="let data of userOrder"
       style="border-bottom: 1px solid grey"
       class="order"
       ><div class="status"><p>{{data?.orderType | titlecase}}</p></div>
-      <ion-col size="12" id="first"
-        ><p>{{data?.Orderdate | date: 'MMM- dd- YYYY h:mm: a'}}</p></ion-col
-      >
+      <ion-col size="12" id="first"><p>{{data?.Orderdate}}</p></ion-col>
       <ion-col size="6.5">
         <h3
           class="font-weight"

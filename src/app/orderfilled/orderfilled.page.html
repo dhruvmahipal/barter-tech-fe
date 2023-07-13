@@ -52,36 +52,34 @@
     </ion-row>
     <hr class="hr" />
     <ion-row id="third_row">
-      <ion-col size="9.0"
+      <ion-col size="8.0"
         ><h4>Item total</h4>
         <p>(Gst Inclusive)</p></ion-col
       >
-      <ion-col size="3.0"><h4>${{finalPrice | number: '0.2-2'}}</h4></ion-col>
-      <ion-col size="9.5"><h4>(GST Inclusive)</h4></ion-col>
-      <ion-col size="2.5"
+      <ion-col size="4.0"><h4>${{finalPrice | number: '0.2-2'}}</h4></ion-col>
+      <ion-col size="8"><h4>(GST Inclusive)</h4></ion-col>
+      <ion-col size="4"
         ><h4>${{userOrderDetails?.orders.taxAmount}}</h4></ion-col
       >
-      <ion-col size="9.5" *ngIf="couponAmount>0"><h4>Coupon</h4></ion-col>
-      <ion-col size="2.5" *ngIf="couponAmount>0"
+      <ion-col size="8" *ngIf="couponAmount>0"><h4>Coupon</h4></ion-col>
+      <ion-col size="4" *ngIf="couponAmount>0"
         ><h4>-${{couponAmount| number: '0.2-2'}}</h4></ion-col
       >
-      <ion-col size="9.5" *ngIf="reedemAmount>0"
-        ><h4>Reedem Points</h4></ion-col
-      >
-      <ion-col size="2.5" *ngIf="reedemAmount>0"
+      <ion-col size="8" *ngIf="reedemAmount>0"><h4>Reedem Points</h4></ion-col>
+      <ion-col size="4" *ngIf="reedemAmount>0"
         ><h4>-${{reedemAmount| number: '0.2-2'}}</h4></ion-col
       >
-      <ion-col size="9.5" *ngIf="userOrderDetails?.orders.deliveryCharge!=null"
+      <ion-col size="8" *ngIf="userOrderDetails?.orders.deliveryCharge!=null"
         ><h4>Delivery</h4></ion-col
       >
-      <ion-col size="2.5" *ngIf="userOrderDetails?.orders.deliveryCharge!=null"
+      <ion-col size="4" *ngIf="userOrderDetails?.orders.deliveryCharge!=null"
         ><h4>${{userOrderDetails?.orders.deliveryCharge}}</h4></ion-col
       >
     </ion-row>
     <hr class="hr" />
     <ion-row id="fourth_row">
-      <ion-col size="9.2"><h4>Grand Total</h4></ion-col>
-      <ion-col size="2.8"><h4>${{finalMoney | number: '0.2-2'}}</h4></ion-col>
+      <ion-col size="8"><h4>Grand Total</h4></ion-col>
+      <ion-col size="4"><h4>${{finalMoney | number: '0.2-2'}}</h4></ion-col>
     </ion-row>
   </ion-grid>
 

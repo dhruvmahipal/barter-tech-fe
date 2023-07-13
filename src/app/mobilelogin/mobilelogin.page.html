@@ -10,12 +10,17 @@
 </ion-header>
 
 <ion-content>
-  <div id="top_img">
+  <!-- <div id="top_img">
     <img src="assets/Stirling-Arms_Logo.png" class="image-header" />
-  </div>
+  </div> -->
+  <img
+    src="assets/logoOriginal.png"
+    class="image-header"
+    style="background-color: #a79c8b"
+  />
   <div class="text-container">
     <ion-text color="medium">
-      <h1>STIRLING ARMS</h1>
+      <h1>ORDER POINT</h1>
     </ion-text>
     <ion-text color="medium">
       <p>Doing.Hotel.Different</p>
@@ -26,15 +31,21 @@
     <div>
       <ion-label class="required">Mobile</ion-label>
       <ion-input
-      placeholder="Enter Number"
-      formControlName="mobile"
-      type="tel"
-      maxlength="10"
-      onKeyPress="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');"
+        placeholder="Enter Number"
+        formControlName="mobile"
+        type="tel"
+        maxlength="10"
+        onKeyPress="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');"
         required
       ></ion-input>
-      <small *ngIf="mobile_FormControl.hasError('required') && mobile_FormControl.touched "><b style="color:red;">Mobile No is required</b></small>
-      <small *ngIf="mobile_FormControl.hasError('maxlength') && mobile_FormControl.touched "><b style="color:red;">Mobile No cannot be greater than 10</b></small>
+      <small
+        *ngIf="mobile_FormControl.hasError('required') && mobile_FormControl.touched "
+        ><b style="color: red">Mobile No is required</b></small
+      >
+      <small
+        *ngIf="mobile_FormControl.hasError('maxlength') && mobile_FormControl.touched "
+        ><b style="color: red">Mobile No cannot be greater than 10</b></small
+      >
     </div>
     <div>
       <ion-button

@@ -38,6 +38,7 @@ export class CartPage implements OnInit {
   suburb_name: any;
   showWarning: boolean = false;
   couponAmount: number = 0;
+  deliveryPossible: any;
   constructor(
     private router: Router,
     private authService: AuthService,
@@ -210,7 +211,7 @@ export class CartPage implements OnInit {
               (parseFloat(Number(this.appliedCoupon.couponValue).toFixed(2)) /
                 100);
             this.couponAmount = couponValue;
-            console.log('--211');
+            // console.log('--211');
 
             // this.grandTotal = totalInvoiceAmnt - couponValue;
             // this.selectedCoupon = this.appliedCoupon;
@@ -225,14 +226,14 @@ export class CartPage implements OnInit {
               Number(this.appliedCoupon.couponValue).toFixed(2)
             );
             this.couponAmount = couponValue;
-            console.log('--225');
+            // console.log('--225');
 
             // this.grandTotal = totalInvoiceAmnt - couponValue;
             // this.selectedCoupon = this.appliedCoupon;
-          } else {
+          } else if (this.itemTotal) {
             this.isCouponUsed = false;
             this.isCouponApplied = false;
-            console.log('--230');
+            // console.log('--230');
             this.toastService.presentToast(
               ' Your total purchase amount doest not satisfy the minimum purchase condition'
             );
@@ -253,7 +254,7 @@ export class CartPage implements OnInit {
       } else if (res == 'invalid') {
         this.isCouponUsed = true;
       }
-      console.log(res);
+      // console.log(res);
     });
     // this.getAddress();
     // setTimeout(() => {
@@ -605,11 +606,11 @@ export class CartPage implements OnInit {
             console.log(obj);
             this.authService.getDeliveryCharges(obj).subscribe({
               next: (data: any) => {
+                console.log(data);
                 this.deliveryCharges = Number(data.data);
-                if (
-                  this.deliveryCharges == 0 &&
-                  this.currentRoute == 'delivery'
-                ) {
+                this.deliveryPossible = data.delivery;
+                console.log(this.deliveryPossible);
+                if (!this.deliveryPossible && this.currentRoute == 'delivery') {
                   this.showWarning = true;
                   console.log(this.showWarning);
                 } else {

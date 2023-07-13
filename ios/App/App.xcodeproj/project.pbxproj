@@ -387,10 +387,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = App/App.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 31012038;
+				CURRENT_PROJECT_VERSION = 31012041;
 				DEVELOPMENT_TEAM = GCC24R5A5S;
 				INFOPLIST_FILE = App/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Stirling Arms Hotel App";
+				INFOPLIST_KEY_CFBundleDisplayName = "Order Point";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -413,10 +413,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = App/App.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 31012038;
+				CURRENT_PROJECT_VERSION = 31012041;
 				DEVELOPMENT_TEAM = GCC24R5A5S;
 				INFOPLIST_FILE = App/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Stirling Arms Hotel App";
+				INFOPLIST_KEY_CFBundleDisplayName = "Order Point";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

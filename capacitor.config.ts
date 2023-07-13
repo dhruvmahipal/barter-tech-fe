@@ -15,7 +15,7 @@ const config: CapacitorConfig = {
     },
   },
   appId: 'com.bartertech.app',
-  appName: 'Stirling Arms Hotel App',
+  appName: 'Order Point',
   webDir: 'www',
   bundledWebRuntime: false,
 };

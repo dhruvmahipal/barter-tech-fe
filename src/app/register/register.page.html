@@ -10,12 +10,17 @@
 </ion-header>
 
 <ion-content>
-  <div id="top_img">
+  <!-- <div id="top_img">
     <img src="assets/Stirling-Arms_Logo.png" class="image-header" />
-  </div>
+  </div> -->
+  <img
+    src="assets/logoOriginal.png"
+    class="image-header"
+    style="background-color: #a79c8b"
+  />
   <div class="text-container">
     <ion-text color="medium">
-      <h1>STIRLING ARMS</h1>
+      <h1>ORDER POINT</h1>
     </ion-text>
     <ion-text color="medium">
       <p>Doing.Hotel.Different</p>
@@ -34,6 +39,10 @@
         *ngIf="firstName_FormControl.hasError('required') && firstName_FormControl.touched"
         ><b style="color: red">First Name is required</b></small
       >
+      <small
+        *ngIf="firstName_FormControl.hasError('minlength') && firstName_FormControl.touched "
+        ><b style="color: red">First Name must be greater than 4</b></small
+      >
     </div>
     <div>
       <ion-label class="required">Last Name</ion-label>
@@ -45,6 +54,10 @@
       <small
         *ngIf="lastName_FormControl.hasError('required') && lastName_FormControl.touched"
         ><b style="color: red">Last Name is required</b></small
+      >
+      <small
+        *ngIf="lastName_FormControl.hasError('minlength') && lastName_FormControl.touched "
+        ><b style="color: red">Last Name must be greater than 3</b></small
       >
     </div>
     <div>
@@ -79,6 +92,10 @@
         *ngIf="mobile_FormControl.hasError('maxlength') && mobile_FormControl.touched "
         ><b style="color: red">Mobile No cannot be greater than 10</b></small
       >
+      <small
+        *ngIf="mobile_FormControl.hasError('minlength') && mobile_FormControl.touched "
+        ><b style="color: red">Mobile No must be equal to 10</b></small
+      >
     </div>
     <div>
       <ion-label>Gender</ion-label>
@@ -86,7 +103,7 @@
         <ion-item>
           <ion-select
             class="gender"
-            interface="popover"
+            interface="action-sheet"
             placeholder="Male"
             formControlName="gender"
           >

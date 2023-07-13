@@ -331,7 +331,7 @@ export class PaymentOptionPage implements OnInit {
           paymentIntent?: string;
           client_secret?: string;
           data?: any;
-        }>('https://barter-tech.antino.ca/api/createIntent', {
+        }>('https://api.orderpoint.net.au/api/createIntent', {
           amount: this.takeAwayPrice * 100,
           currency: 'AUD',
           payment_method_types: ['card'],
@@ -363,7 +363,7 @@ export class PaymentOptionPage implements OnInit {
   async callForStripePayment(client_secret: any) {
     await Stripe.createPaymentSheet({
       paymentIntentClientSecret: client_secret,
-      merchantDisplayName: 'Stirling Arms Hotel App',
+      merchantDisplayName: 'Order Point',
     });
 
     // present PaymentSheet and get result.
@@ -425,7 +425,7 @@ export class PaymentOptionPage implements OnInit {
           client_secret?: string;
           data?: any;
           merchantDisplayName?: string;
-        }>('https://barter-tech.antino.ca/api/createIntent', {
+        }>('https://api.orderpoint.net.au/api/createIntent', {
           amount: this.takeAwayPrice * 100,
           currency: 'inr',
           payment_method_types: ['card'],
@@ -508,7 +508,7 @@ export class PaymentOptionPage implements OnInit {
           paymentIntent: string;
           client_secret?: string;
           data?: any;
-        }>('https://barter-tech.antino.ca/api/createIntent', {
+        }>('https://api.orderpoint.net.au/api/createIntent', {
           amount: this.takeAwayPrice * 100,
           currency: 'inr',
           payment_method_types: ['card'],

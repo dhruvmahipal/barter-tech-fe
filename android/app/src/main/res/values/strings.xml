@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Stirling Arms Hotel App</string>
-    <string name="title_activity_main">Stirling Arms Hotel App</string>
+    <string name="app_name">Order Point</string>
+    <string name="title_activity_main">Order Point</string>
     <string name="package_name">com.bartertech.app</string>
     <string name="custom_url_scheme">com.bartertech.app</string>
 

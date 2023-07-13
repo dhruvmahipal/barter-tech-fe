@@ -31,7 +31,7 @@ export class AddaddressPage implements OnInit {
     private route: ActivatedRoute
   ) {
     this.addAddressForm = this.fb.group({
-      tag: [null, [Validators.required]],
+      tag: ['home', [Validators.required]],
       address: [null, [Validators.required]],
       pincode: [null, [Validators.required]],
       landmark: [null, [Validators.required]],
